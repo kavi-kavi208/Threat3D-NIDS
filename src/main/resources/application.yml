@@ -1,0 +1,48 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /
+
+spring:
+  application:
+    name: threat3d-nids
+  profiles:
+    active: h2
+
+  # Default Embedded H2 Datasource
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:file:./data/nids_db;AUTO_SERVER=TRUE
+    username: sa
+    password: ""
+
+  # JPA & Hibernate Configuration
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    open-in-view: false
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+
+  # H2 Web Console
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+      settings:
+        web-allow-others: false
+
+# Application Custom Security & JWT Configuration
+threat3d:
+  jwt:
+    secret: ${THREAT3D_JWT_SECRET:CHANGE_ME_IN_ENV}
+    expiration-ms: ${THREAT3D_JWT_EXPIRATION:86400000} # 24 Hours
+  cors:
+    allowed-origins:
+      - "http://localhost:5173"
+      - "http://localhost:3000"
+      - "http://localhost:8080"
+      - "http://127.0.0.1:5173"
+      - "http://127.0.0.1:8080"
